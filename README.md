@@ -3,6 +3,7 @@
 ## Motivation
 I wanted to quickly browse through a long list of Audio files but because it opens a new mpv instance for each file i had to close all of them manually.
 
+This script allows me to specify a [yazi](https://github.com/sxyazi/yazi) specific instance  so every file yazi opens with simpv will play in a single instance, but i can also have another single-instance that's unaffected. For example when I want to browse through audio files in yazi but at the same time want to replace my music im listening to in the background
 
 ## Installation
 
