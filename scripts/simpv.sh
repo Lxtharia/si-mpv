@@ -43,6 +43,17 @@ while [[ $# -gt 0 ]]; do
 done
 
 
+# Check if a file was provided
+if [[ -z "$FILE_PATH" ]]; then
+    echo "Error: No file specified."
+    exit 1
+fi
+
+if ! [[ -f "$FILE_PATH" ]]; then
+    echo "Not a valid file"
+    exit 1
+fi
+
 # Remove broken socket if necessary (timeout prevents waiting indefinitely)
 if [ -S "$SOCKET" ]; then
     if ! echo '{ "command": ["get_property", "path"] }' | timeout 0.5 socat - "$SOCKET" >/dev/null 2>&1; then
