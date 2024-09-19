@@ -3,6 +3,29 @@
 ## Motivation
 I wanted to quickly browse through a long list of Audio files but because it opens a new mpv instance for each file i had to close all of them manually.
 
+
+## Installation
+
+### Locally (for current user)
+Just copy it somewhere in your `$PATH`.
+I like `~/.local/bin/mpv`
+
+```bash
+git clone https://github.com/Lxtharia/si-mpv
+cp si-mpv/scripts/simpv.sh ~/.local/bin/simpv
+```
+
+### Globally
+
+```bash
+git clone https://github.com/Lxtharia/si-mpv
+sudo cp si-mpv/scripts/simpv.sh /usr/bin/simpv
+```
+
+### Windows
+
+Eventually potentially
+
 ## Usage
 
 This script can be used like mpv, but it will use a running instance of mpv to play new files (but only if this instance has been started with this script)
