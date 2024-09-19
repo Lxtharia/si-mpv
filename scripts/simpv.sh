@@ -5,21 +5,15 @@ SOCKET="/tmp/mpv_socket"
 
 # Ensure a file is provided
 if [ -z "$1" ]; then
-    echo "Usage: $0 [--replace|--append-play|--append] --socket <path> <file> -- [mpv_options]"
+    echo "Usage: $0 [--replace|--append-play|--append] --socket <path> <file> [mpv_options]"
     exit 1
 fi
 
 # Parse options
-ACTION="replace" # Default action is to queue the file
-MPV_OPTIONS=()
+ACTION="replace"  # Default action is to replace the file
+MPV_OPTIONS=()    # Array to store mpv options for the first instance
 FILE_PATH=""
-SEPARATOR_FOUND=0
 while [[ $# -gt 0 ]]; do
-    if [[ "$1" == "--" ]]; then
-        SEPARATOR_FOUND=1
-        shift
-        break
-    fi
     case "$1" in
         --replace | --playnow)
             ACTION="replace"
@@ -37,19 +31,23 @@ while [[ $# -gt 0 ]]; do
             SOCKET="$2"
             shift 2
             ;;
+        -*)
+            # If the argument starts with `-` but isn't one of our options, it's an mpv option
+            MPV_OPTIONS+=("$1")
+            shift
+            ;;
         *)
             if [[ -z "$FILE_PATH" ]]; then
                 # Make sure to use the full path
                 FILE_PATH=$(realpath "$1")  # First non-option argument is the file
             else
-                echo "Error: Unexpected argument before file or '--': $1"
+                echo "Error: Unexpected argument before file: $1"
                 exit 1
             fi
             shift
             ;;
     esac
 done
-
 
 # Check if a file was provided
 if [[ -z "$FILE_PATH" ]]; then
@@ -58,13 +56,8 @@ if [[ -z "$FILE_PATH" ]]; then
 fi
 
 if ! [[ -f "$FILE_PATH" ]]; then
-    echo "Not a valid file"
+    echo "Error: Not a valid file."
     exit 1
-fi
-
-# After `--`, all remaining arguments are mpv options
-if [[ $SEPARATOR_FOUND -eq 1 ]]; then
-    MPV_OPTIONS=("$@")
 fi
 
 # Remove broken socket if necessary (timeout prevents waiting indefinitely)
@@ -89,7 +82,6 @@ if [ -S "$SOCKET" ]; then
             ;;
     esac
 else
-    # Start new mpv instance with IPC socket
+    # Start new mpv instance with IPC socket and provided mpv options
     mpv --input-ipc-server="$SOCKET" "${MPV_OPTIONS[@]}" "$FILE_PATH"
 fi
-
