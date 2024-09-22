@@ -5,11 +5,15 @@ I wanted to quickly browse through a long list of Audio files but because it ope
 
 This script allows me to specify a [yazi](https://github.com/sxyazi/yazi) specific instance  so every file yazi opens with simpv will play in a single instance, but i can also have another single-instance that's unaffected. For example when I want to browse through audio files in yazi but at the same time want to replace my music im listening to in the background
 
+## Requirements
+
+**Make sure `socat` is installed if you're on Linux**
+
 ## Installation
 
 ### Locally (for current user)
 Just copy it somewhere in your `$PATH`.
-I like `~/.local/bin/mpv`
+I like `~/.local/bin/simpv` as a location
 
 ```bash
 git clone https://github.com/Lxtharia/si-mpv
